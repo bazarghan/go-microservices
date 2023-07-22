@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web_blog:
+    container_name: web_blog
+    build:
+      context: ./services/web_blog
+      dockerfile: Dockerfile
+    ports:
+      - 3069:3069
+    volumes:
+      - ./services/web_blog/:/go/src/app
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    container_name: db
+    build:
+      context: ./services/db
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
